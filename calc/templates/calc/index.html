@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Index | Calculator</title>
+</head>
+<body>
+  <h2>Normal Calculator Using Django</h2>
+  {{ msg }}
+  <form action="" method="post">
+    {% csrf_token %}
+    <div>
+      <label for="media">Media</label>
+      <select id="media" name="media">
+        {% for media in media_type %}
+        <option value="{{ media }}">{{ media }}</option>
+        {% endfor %}
+      </select>
+      <lable for="customer">Customer</lable>
+      <select id="customer" name="customer">
+        {% for customer in customers %}
+        <option value="{{ customer }}">{{ customer }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="width">Width</label>
+      <input type="text" name="width" id="width" required/>
+      <label for="height">height</label>
+      <input type="text" name="height" id="height" required/>
+    </div>
+    <div>
+      <input type="submit" name="submit" value="Get Amount">
+    </div>
+  </form>
+</body>
+</html>
