@@ -1,37 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Index | Calculator</title>
-</head>
-<body>
-  <h2>Normal Calculator Using Django</h2>
+{% extends "calc/base.html" %}
+  {% block content %}
   {{ msg }}
   <form action="" method="post">
     {% csrf_token %}
-    <div>
-      <label for="media">Media</label>
-      <select id="media" name="media">
-        {% for media in media_type %}
-        <option value="{{ media }}">{{ media }}</option>
-        {% endfor %}
-      </select>
-      <lable for="customer">Customer</lable>
-      <select id="customer" name="customer">
-        {% for customer in customers %}
-        <option value="{{ customer }}">{{ customer }}</option>
-        {% endfor %}
-      </select>
+    <div class="form-inline row">
+      <div class="form-group col-xs-6">
+        <label for="media">Media</label>
+        <select id="media" name="media" class="form-control">
+          {% for media in media_type %}
+          <option value="{{ media }}">{{ media }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group col-xs-6">
+        <label for="customer">Customer</label>
+        <select id="customer" name="customer" class="form-control">
+          {% for customer in customers %}
+          <option value="{{ customer }}">{{ customer }}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
-    <div>
-      <label for="width">Width</label>
-      <input type="text" name="width" id="width" required/>
-      <label for="height">height</label>
-      <input type="text" name="height" id="height" required/>
+    <div id="fieldList">
+      <div class="form-inline row">
+        <div class="form-group col-xs-4">
+          <label for="width">Width</label>
+          <input class="form-control" type="number" name="width" id="width" step="0.01" placeholder="Enter page width" required />
+        </div>
+        <div class="form-group col-xs-4">
+          <label for="height">height</label>
+          <input class="form-control" type="number" name="height" id="height" step="0.01" placeholder="Enter page height" required/>
+        </div>
+        <div class="form-group col-xs-4">
+          <label for="total_print">Total Print</label>
+          <input class="form-control" type="number" name="total_print" step="1" placeholder="Enter total print" required/>
+        </div>
+      </div>
     </div>
-    <div>
-      <input type="submit" name="submit" value="Get Amount">
-    </div>
+    <input type="button" id='addMore' class='btn btn-primary' value="Add more fields"></input>
+    <br>
+    <br>
+    <button class="pull-left btn btn-primary" type="submit" name="submit">Get Amount</button>
   </form>
-</body>
-</html>
+  <script type="text/javascript">
+    $(function() {
+      $("#addMore").click(function(e) {
+        e.preventDefault();
+        $("#fieldList").append('<div class="form-inline row"><div class="form-group col-xs-4"><label for="width">Width</label><input class="form-control" type="number" name="width" id="width" step="0.01" placeholder="Enter page width" required/></div><div class="form-group col-xs-4"><label for="height">height</label><input class="form-control" type="number" name="height" id="height" step="0.01" placeholder="Enter page height" required/></div><div class="form-group col-xs-4"><label for="total_print">Total Print</label><input class="form-control" type="number" name="total_print" step="1" placeholder="Enter total print" required/></div></div>');
+      });
+    });
+
+    /*$(function() {
+      $("#addMore").click(function(e) {
+        e.preventDefault();
+        $("#fieldList").append('<div class="form-inline row"><div class="form-group col-xs-4"><label for="width">Width</label><input class="form-control" type="number" name="width[]" id="width" step="0.01" placeholder="Enter page width" required/></div>');
+        $("#fieldList").append('<div class="form-group col-xs-4"><label for="height">height</label><input class="form-control" type="number" name="height[]" id="height" step="0.01" placeholder="Enter page height" required/></div>');
+        $("#fieldList").append('<div class="form-group col-xs-4"><label for="total_print">Total Print</label><input class="form-control" type="number" name="total_print[]" step="1" placeholder="Enter total print"></div></div>');
+      });
+    });*/
+  </script>
+  {% endblock %}
