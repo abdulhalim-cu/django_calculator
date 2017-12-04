@@ -41,3 +41,9 @@ def index(request):
 		context["msg"] = amount_list
 	return render(request, 'calc/index.html', context)
 
+
+def ajax_rate_request(request, media, customer, square_feet):
+	 cost = SquareFeetRange.objects.filter(media=media,
+	 									   customer=customer,
+	 									   square_feet='101-200').get()
+	return render('calc/index.html', {"cost":cost})

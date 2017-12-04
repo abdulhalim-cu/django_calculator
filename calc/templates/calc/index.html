@@ -4,21 +4,25 @@
   <form action="" method="post">
     {% csrf_token %}
     <div class="form-inline row">
-      <div class="form-group col-xs-6">
+      <div class="form-group col-xs-4">
         <label for="media">Media</label>
-        <select id="media" name="media" class="form-control">
+        <select id="media" name="media" class="form-control" onchange="get_rate();">
           {% for media in media_type %}
           <option value="{{ media }}">{{ media }}</option>
           {% endfor %}
         </select>
       </div>
-      <div class="form-group col-xs-6">
+      <div class="form-group col-xs-4">
         <label for="customer">Customer</label>
-        <select id="customer" name="customer" class="form-control">
+        <select id="customer" name="customer" class="form-control" onchange="get_rate();">
           {% for customer in customers %}
           <option value="{{ customer }}">{{ customer }}</option>
           {% endfor %}
         </select>
+        <div class="form-group col-xs-4">
+          <label for="media">Rate</label>
+          <input id="rate" type="text" name="rate">
+      </div>
       </div>
     </div>
     <div id="fieldList">
@@ -33,7 +37,7 @@
         </div>
         <div class="form-group col-xs-4">
           <label for="total_print">Total Print</label>
-          <input class="form-control" type="number" name="total_print" step="1" placeholder="Enter total print" required/>
+          <input id="total_print"class="form-control" type="number" name="total_print" step="1" placeholder="Enter total print" required/>
         </div>
       </div>
     </div>
@@ -48,15 +52,36 @@
         e.preventDefault();
         $("#fieldList").append('<div class="form-inline row"><div class="form-group col-xs-4"><label for="width">Width</label><input class="form-control" type="number" name="width" id="width" step="0.01" placeholder="Enter page width" required/></div><div class="form-group col-xs-4"><label for="height">height</label><input class="form-control" type="number" name="height" id="height" step="0.01" placeholder="Enter page height" required/></div><div class="form-group col-xs-4"><label for="total_print">Total Print</label><input class="form-control" type="number" name="total_print" step="1" placeholder="Enter total print" required/></div></div>');
       });
-    });
+    }); 
 
-    /*$(function() {
-      $("#addMore").click(function(e) {
-        e.preventDefault();
-        $("#fieldList").append('<div class="form-inline row"><div class="form-group col-xs-4"><label for="width">Width</label><input class="form-control" type="number" name="width[]" id="width" step="0.01" placeholder="Enter page width" required/></div>');
-        $("#fieldList").append('<div class="form-group col-xs-4"><label for="height">height</label><input class="form-control" type="number" name="height[]" id="height" step="0.01" placeholder="Enter page height" required/></div>');
-        $("#fieldList").append('<div class="form-group col-xs-4"><label for="total_print">Total Print</label><input class="form-control" type="number" name="total_print[]" step="1" placeholder="Enter total print"></div></div>');
-      });
-    });*/
+    function get_rate() {
+     var media = document.getElementById("media").value;
+     var customer = document.getElementById("customer").value; 
+     var width = document.getElementById("width").value;
+     var height = document.getElementById("height").value;
+     var total_print = document.getElementById("total_print").value;
+
+     var print = width * height * total_print;
+
+     var data = 'media='+media+'&customer='+customer+'&print='+print;
+
+    } 
+
+    function postAjax(url, data, success) {
+      var params = typeof data == 'string' ? data : Object.keys(data).map(
+          function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
+        ).join('&');
+
+      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+      xhr.open('POST', url, true);
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState > 3 && xhr.status == 200) { success(xhr.responseText); }
+      };
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.send(params);
+      return xhr;
+    }
+    
   </script>
   {% endblock %}

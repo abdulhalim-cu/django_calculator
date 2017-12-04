@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <h1>Registering cars on the fleet. <br />(Populate one drop down based on selection in another)</h1>
+    <p>Change the contents of drop down Car based on the selection in dropdown Brand, using Django-forms + Javascritp</p>
+    <div class="select-style">
+        <form action="." method="post">
+            {% csrf_token %}
+            {{ car_form.as_p }}
+            <p><input type="submit" value="Register a car"></p>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {% include "js1.html" %}
+{% endblock %}
