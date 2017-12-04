@@ -29,15 +29,15 @@
       <div class="form-inline row">
         <div class="form-group col-xs-4">
           <label for="width">Width</label>
-          <input class="form-control" type="number" name="width" id="width" step="0.01" placeholder="Enter page width" required />
+          <input class="form-control width" type="number" name="width" id="width" min="0" step="0.01" placeholder="Enter page width" required />
         </div>
         <div class="form-group col-xs-4">
           <label for="height">height</label>
-          <input class="form-control" type="number" name="height" id="height" step="0.01" placeholder="Enter page height" required/>
+          <input class="form-control height" type="number" name="height" id="height" min="0" step="0.01" placeholder="Enter page height" required/>
         </div>
         <div class="form-group col-xs-4">
           <label for="total_print">Total Print</label>
-          <input id="total_print"class="form-control" type="number" name="total_print" step="1" placeholder="Enter total print" required/>
+          <input id="total_print" class="form-control total_print" type="number" name="total_print" step="1"  min="1" required/>
         </div>
       </div>
     </div>
@@ -46,11 +46,15 @@
     <br>
     <button class="pull-left btn btn-primary" type="submit" name="submit">Get Amount</button>
   </form>
+  <br>
+  <p id='widths'></p><br>
+  <p id='heights'></p><br>
+  <p id='prints'></p>
   <script type="text/javascript">
     $(function() {
       $("#addMore").click(function(e) {
         e.preventDefault();
-        $("#fieldList").append('<div class="form-inline row"><div class="form-group col-xs-4"><label for="width">Width</label><input class="form-control" type="number" name="width" id="width" step="0.01" placeholder="Enter page width" required/></div><div class="form-group col-xs-4"><label for="height">height</label><input class="form-control" type="number" name="height" id="height" step="0.01" placeholder="Enter page height" required/></div><div class="form-group col-xs-4"><label for="total_print">Total Print</label><input class="form-control" type="number" name="total_print" step="1" placeholder="Enter total print" required/></div></div>');
+        $("#fieldList").append('<div class="form-inline row"><div class="form-group col-xs-4"><label for="width">Width</label><input class="form-control width" type="number" name="width" id="width" min="0" step="0.01" placeholder="Enter page width" required/></div><div class="form-group col-xs-4"><label for="height">height</label><input class="form-control height" type="number" name="height" id="height" min="0" step="0.01" placeholder="Enter page height" required/></div><div class="form-group col-xs-4"><label for="total_print">Total Print</label><input class="form-control total_print" type="number" name="total_print" min="1" step="1" required/></div></div>');
       });
     }); 
 
@@ -61,6 +65,22 @@
      var height = document.getElementById("height").value;
      var total_print = document.getElementById("total_print").value;
 
+     var widths = document.getElementsByClassName('width'),
+         heights = document.getElementsByClassName('height'),
+         total_prints = document.getElementsByClassName('total_print'),
+         width_list  = [].map.call(widths, function( width ) {
+              return width.value;
+          }).join( ',' );
+         height_list  = [].map.call(heights, function( height ) {
+              return height.value;
+          }).join( ',' );
+         total_print_list  = [].map.call(total_prints, function( print ) {
+              return print.value;
+          }).join( ',' );
+
+     document.getElementById('widths').innerHTML = width_list;
+     document.getElementById('heights').innerHTML = height_list;
+     document.getElementById('prints').innerHTML = total_print_list;
      var total_sqr_feet = width * height * total_print;
 
      //var data = 'media='+media+'&customer='+customer+'&print='+print;
