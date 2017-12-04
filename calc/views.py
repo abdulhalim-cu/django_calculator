@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from .models import MediaType, CustomerType, SquareFeetRange
 
 
@@ -42,9 +43,28 @@ def index(request):
 	return render(request, 'calc/index.html', context)
 
 
-def ajax_rate(request, media, customer, square_feet):
-	#cost = SquareFeetRange.objects.filter(media=media,
-	#									   customer=customer,
-	#									   square_feet='101-200').get()
-	value = str(media)+str(customer)+str(square_feet)
-	print(value)
+def ajax_rate(request):
+	if request.method == 'GET':
+		media = request.GET['media']
+		customer = request.GET['customer']
+		sqft=request.GET['square_feet']
+		square_feet = int(sqft)
+		if square_feet >= 1 and square_feet <= 100:
+			sqft_range = '001-100'
+		elif square_feet >= 101 and square_feet <= 200:
+			sqft_range = '101-200'
+		elif square_feet >= 201 and square_feet <= 300:
+			sqft_range = '201-300'
+		elif square_feet >= 301 and square_feet <= 400:
+			sqft_range = '301-400'
+		elif square_feet >= 401 and square_feet <= 500:
+			sqft_range = '401-500'
+		elif square_feet >= 501:
+			sqft_range = '501+'
+		md = MediaType.objects.get(media_type=media)
+		cs = CustomerType.objects.get(customer_type=customer)
+		cost = SquareFeetRange.objects.filter(media=md.id,
+			customer=cs.id,square_feet=sqft_range).get()
+		return HttpResponse(cost)
+	else:
+		return 'None'

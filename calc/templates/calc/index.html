@@ -61,45 +61,26 @@
      var height = document.getElementById("height").value;
      var total_print = document.getElementById("total_print").value;
 
-     var print = width * height * total_print;
+     var total_sqr_feet = width * height * total_print;
 
      //var data = 'media='+media+'&customer='+customer+'&print='+print;
-
-     var url = 'http://localhost:8000/calc/ajax_rate/'+media.toString()+'/'+customer.toString()+'/'+print.toString();
-
-     //postAjax(url, function(){ console.log(data); });
-
-     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-      xhr.open('GET', url, true);
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState > 3 && xhr.status == 200) {
-            document.getElementById("rate").innerHTML = xhr.responseText;
-        }
-      };
-      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.send();
+     var url = 'http://localhost:8000/calc/ajax_rate/?media='+media+'&customer='+customer+'&square_feet='+total_sqr_feet;
+     
+      getAjax(url, function(data) {
+        document.getElementById("rate").innerHTML = data;
+      });
     }
 
-    // function postAjax(url, success) {
-    //   // var params = typeof data == 'string' ? data : Object.keys(data).map(
-    //   //     function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) }
-    //   //   ).join('&');
-
-    //   var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-    //   xhr.open('POST', url, true);
-    //   xhr.onreadystatechange = function() {
-    //       if (xhr.readyState > 3 && xhr.status == 200) { 
-    //         success(
-    //           document.getElementById("rate").innerHTML = xhr.responseText
-    //         ); 
-    //       }
-    //   };
-    //   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    //   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    //   xhr.send();
-    //   return xhr;
-    // }
+    function getAjax(url, success) {
+      var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+      xhr.open("GET", url);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState > 3 && xhr.status == 200) success(xhr.responseText);
+      };
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.send();
+      return xhr;
+    }
     
   </script>
   {% endblock %}
