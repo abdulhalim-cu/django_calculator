@@ -1,6 +1,8 @@
 {% extends "calc/base.html" %}
+
   {% block content %}
   {{ msg }}
+  {{ amounts }}
   <form action="" method="post">
     {% csrf_token %}
     <div class="form-inline row">
@@ -93,9 +95,9 @@
           
      
       function multiply_array(array) {
-        var total = 1.0;
+        var total = 0;
         for (var i = 0; i < array.length; i++) {
-          total *= parseFloat(array[i]);
+          total += parseFloat(array[i]);
         }
         return total;
       }
@@ -104,13 +106,8 @@
           total_height = multiply_array(height_array),
           total_print = multiply_array(print_array);
     
-      // Check total values of width, height, and prints
-      /*
-      document.getElementById('widths').innerHTML = total_width;
-      document.getElementById('heights').innerHTML = total_height;
-      document.getElementById('prints').innerHTML = total_print;
-      */
-      var total_sqr_feet = total_width.toFixed(3) * total_height.toFixed(3) * total_print.toFixed(3),
+     var sqrft = total_width * total_height * total_print,
+          total_sqr_feet = Math.round(sqrft),
           url = 'http://localhost:8000/calc/ajax_rate/?media='+
                   media+'&customer='+customer+'&square_feet='+
                   total_sqr_feet;
@@ -118,7 +115,7 @@
       getAjax(url, function(data) {
         document.getElementById("rate").innerHTML = data;
       });
-      document.getElementById('prints').innerHTML = total_sqr_feet;
+      document.getElementById('prints').innerHTML = sqrft;
     }
 
     function getAjax(url, success) {

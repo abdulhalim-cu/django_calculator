@@ -18,7 +18,7 @@ def index(request):
 		customer_type = CustomerType.objects.get(customer_type=customer)
 
 		amount_list = []
-
+		msg = ''
 		for i in range(len(width)):
 			sqft = float(width[i]) * float(height[i]) * int(total_print[i])
 			square_feet = int(sqft)
@@ -39,7 +39,8 @@ def index(request):
 		
 			amount = SquareFeetRange.objects.filter(media=media_type.id, customer=customer_type.id,square_feet=sqft_range)
 			amount_list.append(float(amount[0].cost_per_sqft) * sqft)
-		context["msg"] = amount_list
+		context["msg"] = msg
+		context["amounts"] = sum(amount_list)
 	return render(request, 'calc/index.html', context)
 
 
