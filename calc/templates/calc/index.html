@@ -105,18 +105,20 @@
           total_print = multiply_array(print_array);
     
       // Check total values of width, height, and prints
+      /*
       document.getElementById('widths').innerHTML = total_width;
       document.getElementById('heights').innerHTML = total_height;
       document.getElementById('prints').innerHTML = total_print;
-      
-      var total_sqr_feet = width * height * total_print,
+      */
+      var total_sqr_feet = total_width.toFixed(3) * total_height.toFixed(3) * total_print.toFixed(3),
           url = 'http://localhost:8000/calc/ajax_rate/?media='+
                   media+'&customer='+customer+'&square_feet='+
                   total_sqr_feet;
-     
+      
       getAjax(url, function(data) {
         document.getElementById("rate").innerHTML = data;
       });
+      document.getElementById('prints').innerHTML = total_sqr_feet;
     }
 
     function getAjax(url, success) {
