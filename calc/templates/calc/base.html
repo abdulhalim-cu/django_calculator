@@ -25,11 +25,33 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            <div class="row">
+        
+                <div class="col-sm-12">
+                    <div id="map"></div>
+                </div>
+        
+            </div>
+        </div>
          <!-- jQuery -->
         <script src="//code.jquery.com/jquery.js"></script>
         
         <!-- Bootstrap JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCI4YhCt_3YTlnL1Eb8QU6E_MTclnXAFbA&callback=myMap"></script>
+        <script>
+        function myMap() {
+        var mapOptions = {
+            center: new google.maps.LatLng(51.5, -0.12),
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        }
+        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
+        </script>
+
+
 
         {% block customjs %}{% endblock customjs %}
     </body>
